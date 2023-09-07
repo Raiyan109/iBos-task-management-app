@@ -1,12 +1,47 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from '../assets/react.svg'
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { useState } from "react";
+import app from "../firebase.config";
+import Navbar from "../components/Navbar";
+
 
 const Login = () => {
-    const handleSubmit = () => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
+    const navigate = useNavigate()
 
+    const auth = getAuth(app);
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                navigate('/')
+                console.log(user);
+            })
+            .catch((error) => {
+                console.log(error.message);
+            });
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/auth.user
+                const uid = user.uid;
+                console.log(uid);
+            } else {
+                // User is signed out
+                // ...
+            }
+        });
     }
     return (
         <>
+            <Navbar />
             <div className="relative py-16 bg-gradient-to-br from-sky-50 to-gray-200">
                 <div className="relative container m-auto px-6 text-gray-500 md:px-12 xl:px-40">
                     <div className="m-auto md:w-8/12 lg:w-6/12 xl:w-6/12">
@@ -20,7 +55,7 @@ const Login = () => {
                                     <div className="mt-16 grid space-y-4">
                                         <label className="font-semibold text-xs" >Username or Email</label>
                                         <input
-
+                                            onChange={(e) => setEmail(e.target.value)}
                                             className="flex items-center group h-12 px-6 border-2 border-gray-300 rounded-full transition duration-300 hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100" type="email" />
 
                                         <div className="relative w-full">
@@ -32,16 +67,16 @@ const Login = () => {
                                             </div>
                                             <label className="font-semibold text-xs mt-3" >Password</label>
                                             <input
-
+                                                onChange={(e) => setPassword(e.target.value)}
                                                 className=" group w-full py-3 px-3 border-2 border-gray-300 rounded-full transition duration-300 hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100"
                                             // type={showPassword ? "text" : "password"} 
                                             />
                                         </div>
 
 
-                                        <input className='flex items-center justify-center group h-12 px-6 border-2 border-gray-300 rounded-full transition duration-300  hover:text-black text-white font-semibold bg-gray-800 hover:bg-gray-300 cursor-pointer' type="submit" value="Login" />
+                                        <button className='flex items-center justify-center group h-12 px-6 border-2 border-gray-300 rounded-full transition duration-300  hover:text-black text-white font-semibold bg-gray-800 hover:bg-gray-300 cursor-pointer' type="submit" >Login</button>
 
-                                        <p>Or use any of these...</p>
+                                        {/* <p>Or use any of these...</p>
 
                                         <button
                                             className="group h-12 px-6 border-2 border-gray-300 rounded-full transition duration-300 hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100">
@@ -59,7 +94,7 @@ const Login = () => {
                                                 <img src="https://upload.wikimedia.org/wikipedia/en/0/04/Facebook_f_logo_%282021%29.svg" className="absolute left-0 w-5" alt="Facebook logo" />
                                                 <span className="block w-max font-semibold tracking-wide text-gray-700 text-sm transition duration-300 group-hover:text-blue-600 sm:text-base">Continue with Facebook</span>
                                             </div>
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </form>
 

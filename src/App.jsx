@@ -7,9 +7,9 @@ function App() {
 
   return (
     <div>
-      {/* <LoginProvider> */}
-      <RouterProvider router={routes} />
-      {/* </LoginProvider> */}
+      <LoginProvider>
+        <RouterProvider router={routes} />
+      </LoginProvider>
     </div>
   )
 }

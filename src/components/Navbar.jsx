@@ -1,8 +1,17 @@
-import { BiSearch } from 'react-icons/bi'
-import { GiHamburgerMenu } from 'react-icons/gi'
-import { BsFillPersonFill } from 'react-icons/bs'
+
+import { BsPersonCircle } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
+import { useContext } from 'react';
+import { LoginContext } from '../context/LoginProvider';
+
+
 const Navbar = () => {
+    const { logOut, user } = useContext(LoginContext)
+
+    const handleLogOut = () => {
+        logOut()
+    }
+
     return (
         <div>
             <header className="p-4 bg-gray-100 text-gray-800">
@@ -28,8 +37,27 @@ const Navbar = () => {
                         </li>
                     </ul> */}
                     <div className="items-center flex-shrink-0 hidden lg:flex">
-                        <Link to='/login' className="self-center px-8 py-3 rounded">Sign in</Link>
-                        <Link to='/signup' className="self-center px-8 py-3 font-semibold rounded bg-orange-600 text-gray-50">Sign up</Link>
+                        <div className='px-8 py-3 text-xl'>
+                            <BsPersonCircle />
+                        </div>
+                        {
+                            user ?
+                                (
+                                    <>
+                                        <button
+                                            onClick={handleLogOut}
+                                            className='self-center px-8 py-3 font-semibold rounded bg-orange-600 text-gray-50'
+                                        >Log out</button>
+                                    </>
+                                )
+                                :
+                                (
+                                    <>
+                                        <Link to='/login' className="self-center px-8 py-3 rounded">Sign in</Link>
+                                        <Link to='/signup' className="self-center px-8 py-3 font-semibold rounded bg-orange-600 text-gray-50">Sign up</Link>
+                                    </>
+                                )
+                        }
                     </div>
                     <button className="p-4 lg:hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 text-gray-800">
