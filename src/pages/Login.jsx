@@ -14,7 +14,7 @@ const Login = () => {
                             <div className="p-6 sm:p-16">
                                 <div className="space-y-4">
                                     <img src={logo} loading="lazy" className="w-10" alt="logo" />
-                                    <h2 className="mb-8 text-2xl text-cyan-900 font-bold">Login to unlock the <br /> best of Dream Colleges.</h2>
+                                    <h2 className="mb-8 text-2xl text-cyan-900 font-bold">Login</h2>
                                 </div>
                                 <form onSubmit={handleSubmit}>
                                     <div className="mt-16 grid space-y-4">
