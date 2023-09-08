@@ -10,6 +10,7 @@ export const LoginContext = createContext()
 
 
 const LoginProvider = ({ children }) => {
+    const [showModal, setShowModal] = useState(false)
     const [user, setUser] = useState({});
     const auth = getAuth(app)
 
@@ -40,7 +41,8 @@ const LoginProvider = ({ children }) => {
 
     const value = {
         user,
-        logOut
+        logOut,
+        showModal, setShowModal
     }
 
     return (
