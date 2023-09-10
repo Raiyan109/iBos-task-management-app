@@ -1,15 +1,17 @@
 
 import { BsPersonCircle } from 'react-icons/bs'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useContext } from 'react';
 import { LoginContext } from '../context/LoginProvider';
 
 
 const Navbar = () => {
     const { logOut, user } = useContext(LoginContext)
+    const navigate = useNavigate()
 
     const handleLogOut = () => {
         logOut()
+        navigate('/login')
     }
 
     return (

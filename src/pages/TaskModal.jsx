@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
 import { LoginContext } from "../context/LoginProvider";
+import TaskCard from "./TaskCard";
 
 const TaskModal = () => {
-    const { setShowModal } = useContext(LoginContext)
+    const { setShowModal, user } = useContext(LoginContext)
+
     const [title, setTitle] = useState('')
     const [desc, setDesc] = useState('')
     const [dueDate, setDueDate] = useState('')
@@ -83,6 +85,12 @@ const TaskModal = () => {
                 <h1>Description:  {descResult}</h1>
                 <h1>Due Date:  {dateResult}</h1>
                 <h1>Priority Level:  {priorityResult}</h1>
+                <TaskCard
+                    titleResult={titleResult}
+                    descResult={descResult}
+                    dateResult={dateResult}
+                    priorityResult={priorityResult}
+                />
             </div>
 
         </div>

@@ -1,22 +1,43 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { LoginContext } from "../context/LoginProvider";
+import { getAuth, updateProfile } from "firebase/auth";
+import app from "../firebase.config";
 
 const Profile = () => {
-    const { user } = useContext(LoginContext)
+    const { user } = useContext(LoginContext);
+    const auth = getAuth(app);
+
+    const [name, setName] = useState(user.displayName || ''); // Initialize name with user's display name if available
+    const [nameResult, setNameResult] = useState('');
     console.log(user);
-    if (user !== null) {
-        // The user object has basic properties such as display name, email, etc.
-        const displayName = user.displayName;
-        const email = user.email;
-        const photoURL = user.photoURL;
-        const emailVerified = user.emailVerified;
-        console.log(email);
-        // The user's ID, unique to the Firebase project. Do NOT use
-        // this value to authenticate with your backend server, if
-        // you have one. Use User.getToken() instead.
-        const uid = user.uid;
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const userName = user.displayName;
+        if (!userName || nameResult !== userName) { // Check if the name needs to be updated
+            // Here, you should have logic to update user.displayName in your authentication system.
+            // For example, if you're using Firebase Authentication, you can update it like this:
+            // import { auth } from "firebase"; // Import Firebase auth object
+            // const currentUser = auth().currentUser;
+            // currentUser.updateProfile({ displayName: name }).then(() => {
+            //   console.log("Display Name Updated Successfully!");
+            // }).catch((error) => {
+            //   console.error("Error updating Display Name:", error);
+            // });
+
+            updateProfile(auth.currentUser, {
+                displayName: name, photoURL: "https://example.com/jane-q-user/profile.jpg"
+            }).then(() => {
+                console.log('Displayed Name Successfully');
+            }).catch((error) => {
+                console.log(error.message);
+            });
+
+        }
     }
+
+
     return (
         <div>
             <Navbar />
@@ -24,8 +45,19 @@ const Profile = () => {
                 <div className="flex flex-col space-y-4 md:space-y-0 md:space-x-6 md:flex-row">
                     <img src="https://source.unsplash.com/75x75/?portrait" alt="" className="self-center flex-shrink-0 w-24 h-24 border rounded-full md:justify-self-start bg-gray-500 border-gray-300" />
                     <div className="flex flex-col">
-                        <h4 className="text-lg font-semibold text-center md:text-left">Leroy Jenkins</h4>
-                        <p className="text-gray-600">Sed non nibh iaculis, posuere diam vitae, consectetur neque. Integer velit ligula, semper sed nisl in, cursus commodo elit. Pellentesque sit amet mi luctus ligula euismod lobortis ultricies et nibh.</p>
+                        {!user.displayName ?
+                            <form onSubmit={handleSubmit}>
+                                <input type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+
+                                <button >Update User Name</button>
+                            </form>
+                            :
+                            <p className="text-xl font-bold">User Name: {user.displayName}</p>
+                        }
+
                     </div>
                 </div>
                 <div className="flex justify-center pt-4 space-x-4 align-center">

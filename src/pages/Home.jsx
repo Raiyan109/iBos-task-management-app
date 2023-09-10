@@ -6,6 +6,7 @@ import { LoginContext } from '../context/LoginProvider';
 
 const Home = () => {
     const { showModal, setShowModal } = useContext(LoginContext)
+
     return (
         <div>
             <Navbar />
